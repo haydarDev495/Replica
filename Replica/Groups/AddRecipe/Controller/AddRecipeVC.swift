@@ -21,6 +21,7 @@ class AddRecipeVC: UIViewController {
     // - Data
     private var name = false
     private let realm = try! Realm()
+    private var imageData = ""
 
     // - Delegate
     weak var delegate: UpdateModelAfterAddNewRepiceDelegate?
@@ -48,11 +49,7 @@ class AddRecipeVC: UIViewController {
                 model.ingridients = ingredientsTextView.text
                 model.instructions = instructionsTextView.text
                 
-                let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                let imageFileName = "\(model.name).jpg"
-                let imagePath = documentsDirectory.appendingPathComponent(imageFileName)
-                
-                model.photoPath = "\(imagePath)"
+                model.photoPath = imageData
                 
                 do {
                     try realm.write {
@@ -61,7 +58,6 @@ class AddRecipeVC: UIViewController {
                     delegate?.update()
                     successAlert()
                 } catch {
-                    print("Ошибка при записи рецепта в Realm: \(error.localizedDescription)")
                 }
             } else {
                 errorAlert()
@@ -135,16 +131,6 @@ private extension AddRecipeVC {
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
-    
-    func saveRecipeImage(image: UIImage, recipeName: String) {
-        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
-        let imageFileName = "\(recipeName).jpg"
-        let imagePath = documentsDirectory.appendingPathComponent(imageFileName)
-        
-        if let imageData = image.jpegData(compressionQuality: 1.0) {
-            try? imageData.write(to: imagePath)
-        }
-    }
 }
 
 // MARK: -
@@ -174,16 +160,33 @@ extension AddRecipeVC: UITextFieldDelegate {
 }
 
 extension AddRecipeVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        if let pickedImage = info[.originalImage] as? UIImage {
-            if let text = recipeNameTextField.text {
-                saveRecipeImage(image: pickedImage, recipeName: text)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+            let targetDirectory = documentDirectory.appendingPathComponent("Photo")
+            do {
+                try FileManager.default.createDirectory(at: targetDirectory, withIntermediateDirectories: true, attributes: nil)
+
+                let timestamp = Int(Date().timeIntervalSince1970)
+                let imageName = "image_\(timestamp).jpg"
+                let imageURL = targetDirectory.appendingPathComponent(imageName)
+
+                if let imageData = image.jpegData(compressionQuality: 1.0) {
+                    do {
+                        try imageData.write(to: imageURL)
+                        self.imageData = imageURL.path
+                    } catch {
+                        print("Error")
+                    }
+                }
+            } catch {
+                print("Error creating directory: \(error.localizedDescription)")
             }
         }
-        dismiss(animated: true, completion: nil)
+
+        picker.dismiss(animated: true, completion: nil)
     }
 
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
+
 }

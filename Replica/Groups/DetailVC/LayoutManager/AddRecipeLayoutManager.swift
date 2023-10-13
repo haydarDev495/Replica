@@ -25,6 +25,7 @@ private extension AddRecipeLayoutManager {
     }
     
     func configureUI() {
+        vc.title = "Новый рецепт"
         vc.view.backgroundColor = .white
         
         vc.recipeNameTextField.placeholder = "Название рецепта"

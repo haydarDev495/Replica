@@ -27,6 +27,15 @@ class MainVC: UIViewController {
         configure()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if items.isEmpty {
+            
+            showAlert()
+        }
+    }
+    
     @objc func textFieldDidChange(_ textField: UITextField) {
         textFiledAction()
     }
@@ -51,10 +60,11 @@ private extension MainVC {
     
     func configureRealmData() {
         items = realm.objects(Model.self)
-
-        if items.isEmpty {
+        if !UserDefaultsManager.shared.getBV(key: .saveDataToRealm) {
             saveDataToRealm()
+            UserDefaultsManager.shared.saveBV(value: true, key: .saveDataToRealm)
         }
+
     }
     
     func configureLayoutManager() {
@@ -134,6 +144,20 @@ private extension MainVC {
             }
         } catch let error {
             print("error save data first time: \(error)")
+        }
+    }
+    
+    func showAlert() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            guard let sSelf = self else { return }
+
+            let alert = UIAlertController(title: "Отсутствие данных", message: "Нет доступных рецептов.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self]_ in
+                guard let sSelf = self else { return }
+                
+                sSelf.navigationManager.showAddRecipeVC()
+            }))
+            sSelf.present(alert, animated: true, completion: nil)
         }
     }
 }

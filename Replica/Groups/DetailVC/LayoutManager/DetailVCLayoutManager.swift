@@ -56,7 +56,18 @@ private extension DetailVCLayoutManager {
         vc.instructionsTextView.translatesAutoresizingMaskIntoConstraints = false
         
         if let recipe = vc.recipe {
-            vc.recipeImageView.image = UIImage(named: recipe.photo)
+            
+            if let path = photoURL(photoPath: recipe.photoPath) {
+                do {
+                    let imageData = try Data(contentsOf: path)
+                    if let image = UIImage(data: imageData) {
+                        vc.recipeImageView.image = image
+                    } else {
+                    }
+                } catch {
+                    vc.recipeImageView.image = UIImage(named: recipe.photo)
+                }
+            }
             vc.recipeTitleLabel.text = recipe.name
             vc.ingredientsTextView.text = recipe.ingridients
             vc.instructionsTextView.text = recipe.instructions
@@ -84,6 +95,10 @@ private extension DetailVCLayoutManager {
             vc.instructionsTextView.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor, constant: -20),
             vc.instructionsTextView.heightAnchor.constraint(equalToConstant: 150),
         ])
+    }
+    
+    func photoURL(photoPath: String) -> URL? {
+        return URL(fileURLWithPath: photoPath)
     }
 }
 

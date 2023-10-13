@@ -63,7 +63,6 @@ class DetailVC: UIViewController {
                     recipe?.instructions = instructionsTextView.text
                 }
             } catch {
-                print("Ошибка при записи рецепта в Realm: \(error.localizedDescription)")
             }
         }
         navigationItem.rightBarButtonItem?.title = isButtonToggled ? "edit" : "save"

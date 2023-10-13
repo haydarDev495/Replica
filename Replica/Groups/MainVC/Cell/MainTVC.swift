@@ -20,13 +20,24 @@ class MainTVC: UITableViewCell {
     
     func setupUI(model: Model) {
         nameLabel.text = model.name
-        if model.photo.isEmpty {
-            print(model.photoPath)
-            displayImageForRecipe(model.photoPath)
-        } else {
-            recipeImageView.image = UIImage(named: model.photo)
+
+//        if let data = FileManager.default.contents(atPath: model.photoPath), let image = UIImage(data: data) {
+//            recipeImageView.image = image
+//        }
+        
+        if let path = photoURL(photoPath: model.photoPath) {
+            do {
+                let imageData = try Data(contentsOf: path)
+                if let image = UIImage(data: imageData) {
+                    recipeImageView.image = image
+                } else {
+                }
+            } catch {
+                recipeImageView.image = UIImage(named: model.photo)
+            }
         }
     }
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -62,24 +73,9 @@ private extension MainTVC {
         ])
     }
     
-    func displayImageForRecipe(_ recipeName: String) {
-        if let imagePath = getImagePath(forRecipeName: recipeName) {
-            if let image = UIImage(contentsOfFile: imagePath.path) {
-                recipeImageView.image = image
-            } else {
-                print("Изображение не может быть загружено из пути: \(imagePath.path)")
-            }
-        } else {
-            print("Путь к изображению для рецепта не существует")
-        }
+    func photoURL(photoPath: String) -> URL? {
+        return URL(fileURLWithPath: photoPath)
     }
-
     
-    func getImagePath(forRecipeName recipeName: String) -> URL? {
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let imageFileName = "\(recipeName).jpg"
-        let imagePath = documentsDirectory.appendingPathComponent(imageFileName)
-        return imagePath
-    }
-
+    
 }
