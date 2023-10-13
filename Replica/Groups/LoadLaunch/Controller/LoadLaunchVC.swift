@@ -8,22 +8,31 @@
 import UIKit
 
 class LoadLaunchVC: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        configure()
+    }
+}
 
-        // Do any additional setup after loading the view.
+// MARK: -
+// MARK: - Configure
+private extension LoadLaunchVC {
+    
+    func configure() {
+        configureMainVC()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func configureMainVC() {
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let vc = MainVC()
+            let nc = UINavigationController(rootViewController: vc)
+            appDelegate.window?.rootViewController = nc
+            UIView.transition(with: appDelegate.window ?? UIWindow(), duration: 0.5, options: .transitionCrossDissolve) {
+                appDelegate.window?.makeKeyAndVisible()
+            }
+        }
     }
-    */
-
 }
