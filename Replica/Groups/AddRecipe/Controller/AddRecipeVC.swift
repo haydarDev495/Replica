@@ -11,12 +11,12 @@ import RealmSwift
 class AddRecipeVC: UIViewController {
     
     // - UI
-    private let recipeNameTextField = UITextField()
-    private let ingredientsTextView = UITextView()
-    private let instructionsTextView = UITextView()
-    private let imageButton = UIButton(type: .system)
-    private let saveButton = UIButton(type: .system)
-    private let cancelButton = UIButton(type: .system)
+    let recipeNameTextField = UITextField()
+    let ingredientsTextView = UITextView()
+    let instructionsTextView = UITextView()
+    let imageButton = UIButton(type: .system)
+    let saveButton = UIButton(type: .system)
+    let cancelButton = UIButton(type: .system)
     
     // - Data
     private var name = false
@@ -25,12 +25,16 @@ class AddRecipeVC: UIViewController {
     // - Delegate
     weak var delegate: UpdateModelAfterAddNewRepiceDelegate?
     
+    // - Manager
+    private var layout: AddRecipeLayoutManager!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
     
     @objc func selectImage() {
+        
         if let text = recipeNameTextField.text {
             text.isEmpty ? setRecipeNameAlert() : pickImage()
         }
@@ -88,75 +92,19 @@ class AddRecipeVC: UIViewController {
 private extension AddRecipeVC {
     
     func configure() {
+        configureLAyout()
         configureUI()
     }
     
+    func configureLAyout() {
+        layout = AddRecipeLayoutManager(viewContoller: self)
+    }
     func configureUI() {
         recipeNameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-
-        view.backgroundColor = .white
-        
-        recipeNameTextField.placeholder = "Название рецепта"
-        recipeNameTextField.borderStyle = .roundedRect
-        
-        ingredientsTextView.text = "Ингредиенты"
-        ingredientsTextView.textColor = .lightGray
-        ingredientsTextView.layer.borderColor = UIColor.lightGray.cgColor
-        ingredientsTextView.layer.borderWidth = 1
-        ingredientsTextView.layer.cornerRadius = 6
-        
-        instructionsTextView.text = "Инструкции по приготовлению"
-        instructionsTextView.textColor = .lightGray
-        instructionsTextView.layer.borderColor = UIColor.lightGray.cgColor
-        instructionsTextView.layer.borderWidth = 1
-        instructionsTextView.layer.cornerRadius = 6
         
         recipeNameTextField.delegate = self
         ingredientsTextView.delegate = self
         instructionsTextView.delegate = self
-        
-        imageButton.setTitle("Выбрать изображение", for: .normal)
-        saveButton.setTitle("Сохранить", for: .normal)
-        cancelButton.setTitle("Отмена", for: .normal)
-        
-        view.addSubview(recipeNameTextField)
-        view.addSubview(ingredientsTextView)
-        view.addSubview(instructionsTextView)
-        view.addSubview(imageButton)
-        view.addSubview(saveButton)
-        view.addSubview(cancelButton)
-        
-        recipeNameTextField.translatesAutoresizingMaskIntoConstraints = false
-        ingredientsTextView.translatesAutoresizingMaskIntoConstraints = false
-        instructionsTextView.translatesAutoresizingMaskIntoConstraints = false
-        imageButton.translatesAutoresizingMaskIntoConstraints = false
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            recipeNameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            recipeNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            recipeNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            ingredientsTextView.topAnchor.constraint(equalTo: recipeNameTextField.bottomAnchor, constant: 20),
-            ingredientsTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            ingredientsTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            ingredientsTextView.heightAnchor.constraint(equalToConstant: 100),
-            
-            instructionsTextView.topAnchor.constraint(equalTo: ingredientsTextView.bottomAnchor, constant: 20),
-            instructionsTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            instructionsTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            instructionsTextView.heightAnchor.constraint(equalToConstant: 100),
-            
-            imageButton.topAnchor.constraint(equalTo: instructionsTextView.bottomAnchor, constant: 20),
-            imageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            saveButton.topAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: 20),
-            saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            cancelButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 20),
-            cancelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
         
         imageButton.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(saveRecipe), for: .touchUpInside)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA5CCA972AD97B03005B8468 /* AddRecipeLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5CCA962AD97B03005B8468 /* AddRecipeLayoutManager.swift */; };
 		DA8755C62AD7F73800C69B2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8755C52AD7F73800C69B2E /* AppDelegate.swift */; };
 		DA8755CF2AD7F73B00C69B2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA8755CE2AD7F73B00C69B2E /* Assets.xcassets */; };
 		DA8755D22AD7F73B00C69B2E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA8755D02AD7F73B00C69B2E /* LaunchScreen.storyboard */; };
@@ -31,6 +32,7 @@
 		2595B82C13BE9B269E5D032F /* Pods_Replica.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Replica.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		36939B7252D7D7A38BF376FE /* Pods-Replica.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Replica.debug.xcconfig"; path = "Target Support Files/Pods-Replica/Pods-Replica.debug.xcconfig"; sourceTree = "<group>"; };
 		7A9FA2CF69C5C0C59230ECF0 /* Pods-Replica.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Replica.release.xcconfig"; path = "Target Support Files/Pods-Replica/Pods-Replica.release.xcconfig"; sourceTree = "<group>"; };
+		DA5CCA962AD97B03005B8468 /* AddRecipeLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddRecipeLayoutManager.swift; path = Replica/Groups/DetailVC/LayoutManager/AddRecipeLayoutManager.swift; sourceTree = SOURCE_ROOT; };
 		DA8755C22AD7F73800C69B2E /* Replica.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Replica.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA8755C52AD7F73800C69B2E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA8755CE2AD7F73B00C69B2E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -79,6 +81,14 @@
 				7A9FA2CF69C5C0C59230ECF0 /* Pods-Replica.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DA5CCA952AD97AF5005B8468 /* LayoutManager */ = {
+			isa = PBXGroup;
+			children = (
+				DA5CCA962AD97B03005B8468 /* AddRecipeLayoutManager.swift */,
+			);
+			path = LayoutManager;
 			sourceTree = "<group>";
 		};
 		DA8755B92AD7F73800C69B2E = {
@@ -246,6 +256,7 @@
 		DA8755FD2AD8B5F200C69B2E /* AddRecipe */ = {
 			isa = PBXGroup;
 			children = (
+				DA5CCA952AD97AF5005B8468 /* LayoutManager */,
 				DA8755FF2AD8B62D00C69B2E /* Storyboard */,
 				DA8755FE2AD8B62800C69B2E /* Controller */,
 			);
@@ -403,6 +414,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA8755F42AD8694F00C69B2E /* DetailVC.swift in Sources */,
+				DA5CCA972AD97B03005B8468 /* AddRecipeLayoutManager.swift in Sources */,
 				DA8755C62AD7F73800C69B2E /* AppDelegate.swift in Sources */,
 				DA87560B2AD8F50000C69B2E /* DetailVCLayoutManager.swift in Sources */,
 				DA8756052AD8E71C00C69B2E /* NavigationManager.swift in Sources */,
