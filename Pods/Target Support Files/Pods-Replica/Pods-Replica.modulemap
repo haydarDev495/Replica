@@ -1,6 +1,0 @@
-framework module Pods_Replica {
-  umbrella header "Pods-Replica-umbrella.h"
-
-  export *
-  module * { export * }
-}
